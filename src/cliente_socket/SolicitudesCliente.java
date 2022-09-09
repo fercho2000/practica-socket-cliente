@@ -4,63 +4,59 @@ import java.util.Objects;
 import java.util.Scanner;
 
 public class SolicitudesCliente {
-    public SolicitudesCliente() {
+    private static final String EXPRESION_REGULAR_SOLO_VALORES_NUMERICOS = "[0-9]+";
+    private final ClienteSocket clienteSocket;
 
+    public SolicitudesCliente() {
+        this.clienteSocket = new ClienteSocket();
+        this.clienteSocket.startConnection("127.0.0.1", 4444);
     }
 
     public void ingresarRegistro() {
-        ClienteSocket clienteSocket = new ClienteSocket();
-        clienteSocket.startConnection("127.0.0.1", 4444);
+
+        try {
+            this.generarRegistro();
+
+        } catch (Exception e) {
+            return;
+        }
+    }
+
+    private void generarRegistro() {
         Scanner lectura = new Scanner(System.in);
         String operacion;
-        String respuestaServer = null;
-        // do {
-        try {
-            System.out.println("Ingresa 1 para almacenar datos o 2 para consultar una cuenta: ");
-            operacion = lectura.nextLine();
-            if (!Objects.equals(operacion, "1") && !Objects.equals(operacion, "2")) {
-                System.out.println("La operacion ingresada no es valida...");
-                return;
-            }
-            System.out.println("Ingrese El  número de Cuenta: ");
-            String numero = lectura.nextLine();
+        System.out.println("Ingresa 1 para almacenar datos o 2 para consultar una cuenta: ");
+        operacion = lectura.nextLine();
 
-            if (operacion.equals("1")) {
-
-                System.out.println("Ingrese El  Valor: ");
-                String valor = lectura.nextLine();
-
-                clienteSocket.sendMessage(operacion + "," + numero + "," + valor);
-
-            } else if (operacion.equals("2")) {
-                clienteSocket.sendMessage(operacion + ","+numero);
-                //TODO consultar cuenta
-            }
-            Thread.sleep(2000);
-        } catch (Exception e) {
-            System.out.println("Ocurrio un error .... ");
+        if (!Objects.equals(operacion, "1") && !Objects.equals(operacion, "2")) {
+            System.out.println("El tipo de operacion ingresada no es valida...");
+            return;
         }
-        //} while (Objects.requireNonNull(respuestaServer).length() > 0);
-//        String inputLine;
-//        while ((inputLine = in.readLine()) != null) {
-//            if (".".equals(inputLine)) {
-//                System.out.println("acabar...");
-//                break;
-//            }
-//            System.out.println("entra este valor "+inputLine);
-//            System.out.println(inputLine);
-//        }
+        System.out.println("Ingrese El  número de Cuenta: ");
+        String numeroCuenta = lectura.nextLine();
+        validacionDatosSoloNumeros(numeroCuenta);
+        if (operacion.equals("1")) {
 
-        //TODO anterior implementacion
+            System.out.println("Ingrese el  valor para la cuenta: ");
+            String valorCuenta = lectura.nextLine();
+            validacionDatosSoloNumeros(valorCuenta);
+            this.clienteSocket.sendMessage(operacion + "," + numeroCuenta + "," + valorCuenta);
 
-//        System.out.println("Ingrese El  número de Cuenta: ");
-//        String numero = lectura.nextLine();
-//        System.out.println("Ingrese El  Valor: ");
-//        String valor = lectura.nextLine();
-//        cuentaMap.put("numero", numero);
-//        cuentaMap.put("valor", valor);
-//        System.out.println("map " + cuentaMap);
-//        return cuentaMap;
+        } else if (operacion.equals("2")) {
+            clienteSocket.sendMessage(operacion + "," + numeroCuenta);
+        }
+    }
+
+    void validacionDatosSoloNumeros(String valor) {
+        try {
+            Integer.valueOf(valor);
+
+        } catch (NumberFormatException e) {
+            // TODO: handle exception
+            System.out.println("El valor  ingresado esta mal, debe ser númerico ...");
+            throw new NumberFormatException();
+        }
+
     }
 
 }
