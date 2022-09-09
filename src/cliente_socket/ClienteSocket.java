@@ -33,7 +33,7 @@ public class ClienteSocket {
         try {
             salidaCliente.println(msg);
             String respuesta = entradaServidor.readLine();
-            System.out.println("**** respueest clinte *** " + respuesta);
+            System.out.println("Respuest Servidor ----> " + respuesta);
             return respuesta;
         } catch (Exception e) {
             return null;

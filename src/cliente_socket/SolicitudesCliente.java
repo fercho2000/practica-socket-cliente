@@ -16,20 +16,29 @@ public class SolicitudesCliente {
         Map<String, String> cuentaMap = new HashMap<>();
         Scanner lectura = new Scanner(System.in);
         String operacion;
-        do {
-            System.out.println("Ingresa 1 para almacenar datos o 2 para terminar: ");
+        String respuestaServer = null;
+        // do {
+        try {
+            System.out.println("Ingresa 1 para almacenar datos o 2 para consultar una cuenta: ");
             operacion = lectura.nextLine();
-            if (operacion.equalsIgnoreCase("1")) {
-                System.out.println("Ingrese El  número de Cuenta: ");
-                String numero = lectura.nextLine();
+            System.out.println("Ingrese El  número de Cuenta: ");
+            String numero = lectura.nextLine();
+            if (operacion.equals("1")) {
+
                 System.out.println("Ingrese El  Valor: ");
                 String valor = lectura.nextLine();
                 cuentaMap.put("numero", numero);
                 cuentaMap.put("valor", valor);
-                System.out.println("map " + cuentaMap);
-                clienteSocket.sendMessage(numero.concat(",").concat(valor));
+
+                respuestaServer = clienteSocket.sendMessage(numero.concat(",").concat(valor));
+                Thread.sleep(2000);
+            } else if (operacion.equals("2")) {
+                //TODO consultar cuenta
             }
-        } while (!operacion.equalsIgnoreCase("2"));
+        } catch (Exception e) {
+
+        }
+        //} while (Objects.requireNonNull(respuestaServer).length() > 0);
 //        String inputLine;
 //        while ((inputLine = in.readLine()) != null) {
 //            if (".".equals(inputLine)) {
