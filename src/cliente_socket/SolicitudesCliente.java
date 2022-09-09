@@ -1,7 +1,6 @@
 package cliente_socket;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.Objects;
 import java.util.Scanner;
 
 public class SolicitudesCliente {
@@ -12,8 +11,6 @@ public class SolicitudesCliente {
     public void ingresarRegistro() {
         ClienteSocket clienteSocket = new ClienteSocket();
         clienteSocket.startConnection("127.0.0.1", 4444);
-
-        Map<String, String> cuentaMap = new HashMap<>();
         Scanner lectura = new Scanner(System.in);
         String operacion;
         String respuestaServer = null;
@@ -21,22 +18,27 @@ public class SolicitudesCliente {
         try {
             System.out.println("Ingresa 1 para almacenar datos o 2 para consultar una cuenta: ");
             operacion = lectura.nextLine();
+            if (!Objects.equals(operacion, "1") && !Objects.equals(operacion, "2")) {
+                System.out.println("La operacion ingresada no es valida...");
+                return;
+            }
             System.out.println("Ingrese El  número de Cuenta: ");
             String numero = lectura.nextLine();
+
             if (operacion.equals("1")) {
 
                 System.out.println("Ingrese El  Valor: ");
                 String valor = lectura.nextLine();
-                cuentaMap.put("numero", numero);
-                cuentaMap.put("valor", valor);
 
-                respuestaServer = clienteSocket.sendMessage(numero.concat(",").concat(valor));
-                Thread.sleep(2000);
+                clienteSocket.sendMessage(operacion + "," + numero + "," + valor);
+
             } else if (operacion.equals("2")) {
+                clienteSocket.sendMessage(operacion + ","+numero);
                 //TODO consultar cuenta
             }
+            Thread.sleep(2000);
         } catch (Exception e) {
-
+            System.out.println("Ocurrio un error .... ");
         }
         //} while (Objects.requireNonNull(respuestaServer).length() > 0);
 //        String inputLine;
