@@ -6,6 +6,12 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 
+//        Elabore un programa socket cliente que solicite capture por consola, el número de
+//        cuenta y un valor en tipo de dato String,arme un mensaje por concatenación de
+//        cadenas de caracteres en la variable mensaje y envíela al programa socket servidor,
+//        el cual debe recibir el mensaje,extraer las subcadenas cuenta y valor y convertirlas
+//        a valores numéricos,así podrá ingresar al archivo y grabar los datos separados por
+//        comas.Si pudo grabar,el socket server debe enviar un mensaje al cliente diciendo
 public class ClienteSocket {
 
     private Socket clientSocket;
@@ -26,7 +32,9 @@ public class ClienteSocket {
     public String sendMessage(String msg) {
         try {
             salidaCliente.println(msg);
-            return entradaServidor.readLine();
+            String respuesta = entradaServidor.readLine();
+            System.out.println("**** respueest clinte *** " + respuesta);
+            return respuesta;
         } catch (Exception e) {
             return null;
         }
