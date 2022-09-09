@@ -29,14 +29,12 @@ public class ClienteSocket {
 
     }
 
-    public String sendMessage(String msg) {
+    public void sendMessage(String msg) {
         try {
             salidaCliente.println(msg);
             String respuesta = entradaServidor.readLine();
             System.out.println("Respuest Servidor ----> " + respuesta);
-            return respuesta;
         } catch (Exception e) {
-            return null;
         }
     }
 

@@ -18,7 +18,6 @@ public class SolicitudesCliente {
             this.generarRegistro();
 
         } catch (Exception e) {
-            return;
         }
     }
 
